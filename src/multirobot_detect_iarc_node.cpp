@@ -48,7 +48,7 @@ public:
   Mat support_vector_mat_detect;
   Mat result_mat_detect;
   //HOG descriptor
-  //gpu::HOGDescriptor HOG_descriptor_detect;//gpu
+  //gpu::HOGDescriptor HOG_descriptor_detect_gpu;//gpu
   HOGDescriptor HOG_descriptor_detect;
   HOGDescriptor HOG_descriptor_classify;
   //video
@@ -66,7 +66,7 @@ public:
   int frame_num;
   double this_time, last_time, dt;
   Mat src_3,src_4,dst_3;
-  gpu::GpuMat src_GPU;//gpu
+  //gpu::GpuMat src_GPU;//gpu
   vector<Rect> location_detect;
   vector<RobotMessage> detect_message, detect_rob_message, detect_obs_message, detect_rob_message_last, detect_obs_message_last;
   vector<float> scores;
@@ -98,8 +98,8 @@ public:
     support_vector_mat_detect = Mat::zeros(support_vector_num_detect, descriptor_dim_detect, CV_32FC1);
     result_mat_detect = Mat::zeros(1, descriptor_dim_detect, CV_32FC1);
     //HOG descriptor
-    //HOG_descriptor_detect = gpu::HOGDescriptor(WinSizeDetect,BlockSizeDetect,BlockStrideDetect,CellSizeDetect,NbinsDetect,1,-1,0,0.2,false,10);//gpu
-    HOG_descriptor_detect = HOGDescriptor(WinSizeDetect,BlockSizeDetect,BlockStrideDetect,CellSizeDetect,NbinsDetect,1,-1,0,0.2,false,10);
+    //HOG_descriptor_detect_gpu = gpu::HOGDescriptor(WinSizeDetect,BlockSizeDetect,BlockStrideDetect,CellSizeDetect,NbinsDetect,-1,0.2,false,12);//gpu
+    HOG_descriptor_detect = HOGDescriptor(WinSizeDetect,BlockSizeDetect,BlockStrideDetect,CellSizeDetect,NbinsDetect,1,-1,0,0.2,false,12);
     HOG_descriptor_classify = HOGDescriptor(WinSizeClassify,BlockSizeClassify,BlockStrideClassify,CellSizeClassify,NbinsClassify);
     for(int i=0; i<support_vector_num_detect; i++) 
     {
@@ -117,6 +117,7 @@ public:
     detector_detect.push_back(svm_detect.get_rho());//add rho
     
     cout<<"dimension of svm detector for HOG detect(w+b):"<<detector_detect.size()<<endl;
+    //HOG_descriptor_detect_gpu.setSVMDetector(detector_detect);
     HOG_descriptor_detect.setSVMDetector(detector_detect);
     //video
     if(!nh_image_param.getParam("show_video_flag", show_video_flag))show_video_flag = true;
@@ -182,7 +183,7 @@ public:
     resetState();
     
     //detect
-    //HOG_descriptor_detect.detectMultiScale(src_GPU, location_detect, HitThreshold, WinStride, Size(), DetScale, 0.2, true);//gpu
+    //HOG_descriptor_detect_gpu.detectMultiScale(src_GPU, location_detect, HitThreshold, WinStride, Size(), DetScale);//gpu
     HOG_descriptor_detect.detectMultiScale(src_3, location_detect, HitThreshold, WinStride, Size(0,0), DetScale, 2.0, false);
     location_detect = resize_boxes(location_detect, src_3, detect_resize_rate);
     
