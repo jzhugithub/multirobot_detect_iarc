@@ -240,7 +240,7 @@ public:
       {
 	for(int j = 0; j < detect_rob_message_last.size(); j++)
 	{
-	  if(detect_rob_message[i].label == detect_rob_message_last[j].label)
+	  if(rcp.rob_num < rob_pub_num && detect_rob_message[i].label == detect_rob_message_last[j].label)
 	  {
 	    rcp.exist_rob_flag = true;
 	    //estimate position
