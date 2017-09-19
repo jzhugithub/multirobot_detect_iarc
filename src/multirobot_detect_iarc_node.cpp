@@ -131,7 +131,7 @@ public:
     if(!nh_image_param.getParam("save_result_video_flag", save_result_video_flag))save_result_video_flag = false;
     if(!nh_image_param.getParam("rate", video_rate))video_rate = 5.0;
     video_delay = 1000/video_rate;
-    if(!nh_image_param.getParam("result_video_file_name", result_video_file_name))result_video_file_name = "/home/ubuntu/ros_my_workspace/src/multirobot_detect/result/a544.avi";
+    if(!nh_image_param.getParam("result_video_file_name", result_video_file_name))result_video_file_name = "/home/ubuntu/ros_my_workspace/src/multirobot_detect_iarc/result/a544.avi";
     //frame
     frame_num = 1;
     this_time = 0;
